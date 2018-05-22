@@ -9,10 +9,10 @@ class SessionsController < ApplicationController
     receive_spotify_callback
     user = User.find_by(email: @email.downcase)
     if user
-      puts 'it worked!'
+      puts 'login'
       log_in(user, @hash)
     else
-      puts 'it didnt work'
+      puts 'new_user'
       new_user(@email)
       log_in(user, @hash)
     end

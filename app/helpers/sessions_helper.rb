@@ -9,6 +9,9 @@ module SessionsHelper
 
   # Logs in the given user.
   def log_in(user, hash)
+    puts 'log_in'
+    puts user.id
+    puts hash
     session[:user_id] = user.id
     session[:hash] = hash
   end
