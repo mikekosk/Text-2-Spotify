@@ -13,9 +13,45 @@
         <%= session[:hash]['display_name'] %>
         <%= @user.email %>
       </h1>
-      <% spotify_user.playlists.each do |k| %>
-        <li><%= "#{k.name}" %></li>
+      <% spotify_user.playlists.each_with_index do |k, index| %>
+        <li>
+          <%= "#{index}. #{k.name}" %>
+          <%= link_to "Link Text", user_path(:playlist_id => index+1) %>
+        </li>
       <% end %>
+    </section>
+  </aside>
+  <aside class="col-md-4">
+    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
+    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
+    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
+    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
+    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
+  </aside>
+
+  <aside class="col-md-4">
+    <section class="user_info">
+      <% if @tracks.nil? %>
+        <%= link_to "Link Text", user_path(:playlist_id => 1) %>
+      <% else %>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th><%= "name" %></th>
+            <th><%= "danceability" %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tracks.each do |track| %>
+            <tr>
+              <td><%= track.name %></td>
+              <td><%= track.audio_features.danceability %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <% end %>
+
     </section>
   </aside>
 </div>
