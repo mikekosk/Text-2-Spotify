@@ -1,5 +1,6 @@
 <% provide(:title, @user.email) %>
 <% spotify_user = RSpotify::User.new(session[:hash]) %>
+<% sort_by = params[:sort_by] %>
 
 <h1>
   <%= session[:hash]['display_name'] %>
@@ -7,45 +8,59 @@
 
 <% provide(:title, @user.email) %>
 <div class="row">
-  <aside class="col-md-4">
+  <aside class="col-md-5">
     <section class="user_info">
+
       <h1>
-        <%= session[:hash]['display_name'] %>
-        <%= @user.email %>
+        Your Playlists
       </h1>
+
       <% spotify_user.playlists.each_with_index do |k, index| %>
         <li>
-          <%= "#{index}. #{k.name}" %>
-          <%= link_to "Link Text", user_path(:playlist_id => index+1) %>
+          <%= link_to "#{index+1}. #{k.name}", user_path(:playlist_id => index+1) %>
         </li>
       <% end %>
     </section>
-  </aside>
-  <aside class="col-md-4">
-    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
-    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
-    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
-    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
-    <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by).merge({:sort_by => :danceability}) %>
+    <p>
+      <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by)
+            .merge({:sort_by => :danceability}) %> <br>
+      <%= link_to "Sort by tempo", params.permit(:playlist_id, :sort_by)
+            .merge({:sort_by => :tempo}) %> <br>
+      <%= link_to "Sort by valence", params.permit(:playlist_id, :sort_by)
+            .merge({:sort_by => :valence}) %> <br>
+      <%= link_to "Sort by speechiness", params.permit(:playlist_id, :sort_by)
+            .merge({:sort_by => :speechiness}) %> <br>
+      <%= link_to "Sort by instumentalness", params.permit(:playlist_id, :sort_by)
+            .merge({:sort_by => :instumentalness}) %> <br>
+    </p>
+
   </aside>
 
-  <aside class="col-md-4">
+  <aside class="col-md-7">
     <section class="user_info">
       <% if @tracks.nil? %>
-        <%= link_to "Link Text", user_path(:playlist_id => 1) %>
+        <%= link_to "select playlist", user_path(:playlist_id => 1) %>
       <% else %>
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th><%= "name" %></th>
-            <th><%= "danceability" %></th>
+            <th><%= "Title" %></th>
+            <th><%= "Artist" %></th>
+            <% if !sort_by.nil? %>
+              <th><%= sort_by %></th>
+            <% end %>
           </tr>
         </thead>
         <tbody>
           <% @tracks.each do |track| %>
             <tr>
               <td><%= track.name %></td>
-              <td><%= track.audio_features.danceability %></td>
+              <td><%= track.artists[0].name %></td>
+              <% if !sort_by.nil? %>
+                <td>
+                  <%= "#{track.audio_features.send(sort_by)}" %>
+                </td>
+              <% end %>
             </tr>
           <% end %>
         </tbody>
