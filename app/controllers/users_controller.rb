@@ -25,6 +25,10 @@ class UsersController < ApplicationController
       @tracks = @tracks.sort_by{|a| a.audio_features.speechiness}
     elsif params[:sort_by] == 'instrumentalness'
       @tracks = @tracks.sort_by{|a| a.audio_features.instrumentalness}
+    elsif params[:sort_by] == 'acousticness'
+      @tracks = @tracks.sort_by{|a| a.audio_features.acousticness}
+    elsif params[:sort_by] == 'energy'
+      @tracks = @tracks.sort_by{|a| a.audio_features.energy}
     else
       @tracks
     end

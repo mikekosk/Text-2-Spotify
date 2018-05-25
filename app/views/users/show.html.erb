@@ -3,8 +3,11 @@
 <% sort_by = params[:sort_by] %>
 
 <h1>
-  <%= session[:hash]['display_name'] %>
+  Welcome!
 </h1>
+<h2>
+  Click on a playlist to begin analyzing and sorting your playlists
+</h2>
 
 <% provide(:title, @user.email) %>
 <div class="row">
@@ -16,9 +19,9 @@
       </h1>
 
       <% spotify_user.playlists.each_with_index do |k, index| %>
-        <li>
+        <ul>
           <%= link_to "#{index+1}. #{k.name}", user_path(:playlist_id => index+1) %>
-        </li>
+        </ul>
       <% end %>
     </section>
     <p>
@@ -30,24 +33,31 @@
             .merge({:sort_by => :valence}) %> <br>
       <%= link_to "Sort by speechiness", params.permit(:playlist_id, :sort_by)
             .merge({:sort_by => :speechiness}) %> <br>
-      <%= link_to "Sort by instumentalness", params.permit(:playlist_id, :sort_by)
-            .merge({:sort_by => :instumentalness}) %> <br>
+      <%= link_to "Sort by instrumentalness", params.permit(:playlist_id, :sort_by)
+            .merge({:sort_by => :instrumentalness}) %> <br>
+      <%= link_to "Sort by acousticness", params.permit(:playlist_id, :sort_by)
+            .merge({:sort_by => :acousticness}) %> <br>
+      <%= link_to "Sort by energy", params.permit(:playlist_id, :sort_by)
+            .merge({:sort_by => :energy}) %> <br>
     </p>
+
 
   </aside>
 
   <aside class="col-md-7">
     <section class="user_info">
       <% if @tracks.nil? %>
-        <%= link_to "select playlist", user_path(:playlist_id => 1) %>
+        Please Select a Playlist!
       <% else %>
+      <%= link_to "Save Playlist", params.permit(:playlist_id, :sort_by, :save)
+            .merge({:save => 'true'}) %>
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
             <th><%= "Title" %></th>
             <th><%= "Artist" %></th>
             <% if !sort_by.nil? %>
-              <th><%= sort_by %></th>
+              <th><%= sort_by.capitalize %></th>
             <% end %>
           </tr>
         </thead>
@@ -58,7 +68,7 @@
               <td><%= track.artists[0].name %></td>
               <% if !sort_by.nil? %>
                 <td>
-                  <%= "#{track.audio_features.send(sort_by)}" %>
+                  <%= "#{track.audio_features.send(sort_by).round(2)}" %>
                 </td>
               <% end %>
             </tr>
