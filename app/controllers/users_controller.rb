@@ -49,8 +49,6 @@ class UsersController < ApplicationController
       redirect_to params.permit(:playlist_id, :sort_by)
         .merge({:playlist_id => 1})
     end
-
-
   end
 
   def save

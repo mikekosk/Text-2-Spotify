@@ -46,11 +46,13 @@
 
   <aside class="col-md-7">
     <section class="user_info">
+      <% if params[:sort_by] %>
+        <%= link_to "Save Playlist", params.permit(:playlist_id, :sort_by, :save)
+              .merge({:save => 'true'}) %>
+      <% end %>
       <% if @tracks.nil? %>
         Please Select a Playlist!
       <% else %>
-      <%= link_to "Save Playlist", params.permit(:playlist_id, :sort_by, :save)
-            .merge({:save => 'true'}) %>
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
