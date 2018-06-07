@@ -9,9 +9,6 @@ module SessionsHelper
 
   # Logs in the given user.
   def log_in(user, hash)
-    puts 'log_in'
-    puts user.id
-    puts hash
     session[:user_id] = user.id
     session[:hash] = hash
   end
@@ -24,7 +21,7 @@ module SessionsHelper
 
   # Create a new user
   def new_user(email)
-    user = User.new(email: @email.downcase)
+    user = User.new(email: @email.downcase, account_hash: @hash)
     user.save
   end
 

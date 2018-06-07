@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   get  '/signup',  to: 'users#new'
   post '/signup',  to: 'users#create'
 
+  # twilio
+  post 'sms/' => 'messages#reply'
+
   # Spotify Calls
   get '/auth/spotify/callback', to: 'sessions#create'
 

@@ -1,11 +1,16 @@
 class UsersController < ApplicationController
 
+
   def show
     @user = User.find(params[:id])
     spotify_user = RSpotify::User.new(session[:hash])
 
     ## Select Playlist
     if params[:playlist_id]
+      playlist_id = params[:playlist_id].to_i - 1
+      session[:playlist_id] = playlist_id
+      @user.update(playlist_id: playlist_id)
+
       playlist_id = params[:playlist_id].to_i - 1
       @tracks = spotify_user.playlists[playlist_id].tracks(limit: 40)
     else
