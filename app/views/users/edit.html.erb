@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-6 help">
+    <h1> Need help? </h1>
+    <h3>
+      1. Make an account with <a href="https://www.twilio.com/try-twilio">Twilio</a>
+    <h3>
+    <p>
+      Input your personal cell phone number for testing purposes.
+    </p>
+    <h3>
+      2. Navigate to your account Console
+    </h3>
+    <p>
+      Input the AccountSid, Auth Token, and phone number associated with your
+      Twilio Account into the form on the right.
+    </p>
+    <h3>
+      3. Test from your cell phone.
+    </h3>
+    <p>
+      Select one of your Spotify playlists and send a song request message from your cell
+      phone.  The search pulls Spotify's first song result, so be specific!
+      <br><br>
+      For example - "Beiber despacito" will have sufficient keywords to get you song you want!
+    </p>
+    <h3>
+      4. Purchase an expanded phone plan with Twilio
+    </h3>
+    <p>
+      In order to have additional users add songs to your Spotify Playlist, you'll
+      need to purchase a Twilio Plan which will charge per text message sent.
+      These run about 1-2 cents per text, with a $1 charge for the phone number.
+    </p>
+  </div>
+  <div class="col-md-4 help">
+    <br><br><br>
+    <%= form_for(@user) do |f| %>
+
+      <%= f.label :phone %>
+      <%= f.telephone_field :phone, class: 'form-control' %>
+
+      <%= f.label :account_sid %>
+      <%= f.text_field :account_sid, class: 'form-control' %>
+
+      <%= f.label :auth_token %>
+      <%= f.text_field :auth_token, class: 'form-control' %>
+      <br>
+      <%= f.submit "Save changes", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

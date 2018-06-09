@@ -10,11 +10,11 @@ class SessionsController < ApplicationController
       user = User.find_by(email: @email.downcase)
       log_in(user, @hash)
     end
-    flash[:success] = 'Welcome!'
     redirect_to user
   end
 
   def destroy
+    @user = User.find_by(id: session[:user_id])
     log_out
     redirect_to root_url
   end

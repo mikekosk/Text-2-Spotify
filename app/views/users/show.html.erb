@@ -2,58 +2,46 @@
 <% spotify_user = RSpotify::User.new(session[:hash]) %>
 <% sort_by = params[:sort_by] %>
 
-<h1>
-  Welcome!
-</h1>
-<h2>
-  Click on a playlist to begin analyzing and sorting your playlists
-</h2>
+<% if @user.phone.nil? %>
+<% else %>
+  <div class="row center show">
+    <h1> <%= "Your Twilio Number is #{@user.phone}" %> </h1>
+  </div>
+<% end %>
 
-<% provide(:title, @user.email) %>
 <div class="row">
-  <aside class="col-md-5">
+  <div class="col-md-3">
     <section class="user_info">
-
-      <h1>
-        Your Playlists
-      </h1>
-
-      <% spotify_user.playlists.each_with_index do |k, index| %>
-        <ul>
-          <%= link_to "#{index+1}. #{k.name}", user_path(:playlist_id => index+1) %>
-        </ul>
-      <% end %>
+      <small> <i> Showing most recent playlists </i> </small>
+      <table class="table table-dark dark-bg">
+        <thead>
+          <tr>
+            <th><%= "Your Playlists" %></th>
+          <tr>
+        <thead>
+        <tbody>
+          <% spotify_user.playlists.each_with_index do |k, index| %>
+            <tr>
+              <td>
+                <%= link_to "#{index+1}. #{k.name}", user_path(:playlist_id => index+1) %>
+              </td>
+            </tr>
+          <% end %>
+        <tbody>
+      </table>
     </section>
-    <p>
-      <%= link_to "Sort by danceability", params.permit(:playlist_id, :sort_by)
-            .merge({:sort_by => :danceability}) %> <br>
-      <%= link_to "Sort by tempo", params.permit(:playlist_id, :sort_by)
-            .merge({:sort_by => :tempo}) %> <br>
-      <%= link_to "Sort by valence", params.permit(:playlist_id, :sort_by)
-            .merge({:sort_by => :valence}) %> <br>
-      <%= link_to "Sort by speechiness", params.permit(:playlist_id, :sort_by)
-            .merge({:sort_by => :speechiness}) %> <br>
-      <%= link_to "Sort by instrumentalness", params.permit(:playlist_id, :sort_by)
-            .merge({:sort_by => :instrumentalness}) %> <br>
-      <%= link_to "Sort by acousticness", params.permit(:playlist_id, :sort_by)
-            .merge({:sort_by => :acousticness}) %> <br>
-      <%= link_to "Sort by energy", params.permit(:playlist_id, :sort_by)
-            .merge({:sort_by => :energy}) %> <br>
-    </p>
+  </div>
 
-
-  </aside>
-
-  <aside class="col-md-7">
+  <div class="col-md-9">
     <section class="user_info">
-      <% if params[:sort_by] %>
-        <%= link_to "Save Playlist", params.permit(:playlist_id, :sort_by, :save)
-              .merge({:save => 'true'}) %>
-      <% end %>
-      <% if @tracks.nil? %>
-        Please Select a Playlist!
-      <% else %>
-      <table class="table table-bordered table-striped">
+      <small> <i> Showing 50 most recent songs.  Refresh to see new songs added. </i> </small>
+      <table class="table dark-bg table-dark ">
+        <% if @user.account_sid.nil? %>
+          <h1> Please connect your Twilio <br> credentials in the Settings Tab! <h1>
+
+        <% elsif @tracks.nil? %>
+          <h1> Please Select a Playlist! </h1>
+        <% else %>
         <thead>
           <tr>
             <th><%= "Title" %></th>
@@ -76,9 +64,9 @@
             </tr>
           <% end %>
         </tbody>
+        <% end %>
       </table>
-      <% end %>
 
     </section>
-  </aside>
+  </div>
 </div>

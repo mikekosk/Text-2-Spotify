@@ -11,11 +11,13 @@ module SessionsHelper
   def log_in(user, hash)
     session[:user_id] = user.id
     session[:hash] = hash
+    user.update(account_hash: hash)
   end
 
   # Logs out current user
   def log_out
     session.delete(:user_id)
+    @user.update(account_hash: nil)
     @current_user = nil
   end
 
